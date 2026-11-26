@@ -30,16 +30,25 @@ PostgreSQL database for further analysis.
 The scraped column names are kept in Indonesian to match the source website and
 the loaded database table.
 
-| Column | Type | Description |
-| :--- | :--- | :--- |
-| `id` | `INTEGER` (PK) | Sequential identifier assigned during transformation |
-| `nama_produk` | `VARCHAR(300)` | Product name |
-| `harga_produk` | `INTEGER` | Original price (IDR), non-numeric characters stripped |
-| `diskon_produk` | `INTEGER` | Discount percentage |
-| `harga_diskon` | `INTEGER` | Discounted price (IDR) |
-| `jumlah_ukuran` | `INTEGER` | Number of available size variants |
-| `jumlah_terjual` | `INTEGER` | Units sold |
-| `area_pengiriman` | `VARCHAR(300)` | Shipping area |
+<table width="100%">
+  <thead>
+    <tr>
+      <th align="left" width="20%">Column</th>
+      <th align="left" width="20%">Type</th>
+      <th align="left" width="60%">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>id</code></td><td><code>INTEGER</code> (PK)</td><td>Sequential identifier assigned during transformation</td></tr>
+    <tr><td><code>nama_produk</code></td><td><code>VARCHAR(300)</code></td><td>Product name</td></tr>
+    <tr><td><code>harga_produk</code></td><td><code>INTEGER</code></td><td>Original price (IDR), non-numeric characters stripped</td></tr>
+    <tr><td><code>diskon_produk</code></td><td><code>INTEGER</code></td><td>Discount percentage</td></tr>
+    <tr><td><code>harga_diskon</code></td><td><code>INTEGER</code></td><td>Discounted price (IDR)</td></tr>
+    <tr><td><code>jumlah_ukuran</code></td><td><code>INTEGER</code></td><td>Number of available size variants</td></tr>
+    <tr><td><code>jumlah_terjual</code></td><td><code>INTEGER</code></td><td>Units sold</td></tr>
+    <tr><td><code>area_pengiriman</code></td><td><code>VARCHAR(300)</code></td><td>Shipping area</td></tr>
+  </tbody>
+</table>
 
 > Numeric columns are modeled as nullable integers because many listings are
 > missing one or more of these values.
