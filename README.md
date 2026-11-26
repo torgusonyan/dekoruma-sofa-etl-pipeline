@@ -1,2 +1,98 @@
-# dekoruma-sofa-etl-pipeline
-An end-to-end ETL pipeline to extract, clean, transform, and store e-commerce sofa product data from  Dekoruma using web scraping, Pandas, and PostgreSQL. 
+# Dekoruma Sofa: Web Scraping & Data Preparation ETL
+
+An end-to-end **ETL (Extract, Transform, Load)** pipeline that scrapes sofa
+product listings from the [Dekoruma](https://www.dekoruma.com/Sofa) e-commerce
+website, cleans and prepares the data with Pandas, and loads the result into a
+PostgreSQL database for further analysis.
+
+**Author:** Ryan Farid Pratama
+**Tech Stack:** Python · Selenium · BeautifulSoup · Pandas · PostgreSQL · SQL
+
+---
+
+## Pipeline
+
+1. **Extract** — Scrape product data across all catalog pages (33 pages) using
+   Selenium to render the dynamic page and BeautifulSoup to parse it. Each field
+   is wrapped in a `try/except` so every column stays the same length even when a
+   field is missing. Raw output is saved to `dekoruma_raw.csv`.
+2. **Transform** — With Pandas: explore the data, drop rows with no product name,
+   strip non-numeric characters from the numeric fields, cast them to a nullable
+   integer type (`Int64`), add a sequential `id` primary key, and sort by `id`.
+   Cleaned output is saved to `dekoruma_sofa.csv`.
+3. **Load** — Create the target table and load the cleaned CSV into PostgreSQL
+   using `dekoruma_sofa_schema.sql`.
+
+---
+
+## Data Dictionary
+
+The scraped column names are kept in Indonesian to match the source website and
+the loaded database table.
+
+| Column | Type | Description |
+| :--- | :--- | :--- |
+| `id` | `INTEGER` (PK) | Sequential identifier assigned during transformation |
+| `nama_produk` | `VARCHAR(300)` | Product name |
+| `harga_produk` | `INTEGER` | Original price (IDR), non-numeric characters stripped |
+| `diskon_produk` | `INTEGER` | Discount percentage |
+| `harga_diskon` | `INTEGER` | Discounted price (IDR) |
+| `jumlah_ukuran` | `INTEGER` | Number of available size variants |
+| `jumlah_terjual` | `INTEGER` | Units sold |
+| `area_pengiriman` | `VARCHAR(300)` | Shipping area |
+
+> Numeric columns are modeled as nullable integers because many listings are
+> missing one or more of these values.
+
+---
+
+## Repository Structure
+
+```
+.
+├── dekoruma_sofa_etl.ipynb      # ETL notebook (Extract → Transform → Load)
+├── dekoruma_sofa_schema.sql     # PostgreSQL table creation + CSV load
+├── dekoruma_raw.csv             # Raw scraped data (extract output)
+├── dekoruma_sofa.csv            # Cleaned data (transform output)
+└── README.md
+```
+
+---
+
+## Getting Started
+
+### Prerequisites
+- Python 3.10+
+- Google Chrome + a matching [ChromeDriver](https://chromedriver.chromium.org/)
+  (Selenium uses `webdriver.Chrome()`)
+- A running PostgreSQL instance
+- Python packages:
+  ```bash
+  pip install beautifulsoup4 selenium pandas
+  ```
+
+### Run the pipeline
+
+1. **Extract & Transform** — open `dekoruma_sofa_etl.ipynb` and run the cells top
+   to bottom. This scrapes the site, cleans the data, and writes
+   `dekoruma_raw.csv` and `dekoruma_sofa.csv`.
+
+2. **Load into PostgreSQL** — update the CSV path in `dekoruma_sofa_schema.sql` to
+   match your machine, then run it:
+   ```bash
+   psql -U your_username -d dekoruma_sofa -f dekoruma_sofa_schema.sql
+   ```
+
+---
+
+## Notes
+
+- **Dynamic scraping:** Dekoruma loads products with JavaScript, so Selenium is
+  required to render each page before parsing. A 5-second wait per page gives the
+  content time to load.
+- **Fragile selectors:** the scraper targets auto-generated CSS class names, which
+  can change when the website is updated. The selectors may need to be refreshed
+  if the site changes.
+- **Normalization:** the single table is already in 3NF — one primary key (`id`)
+  with every attribute depending only on it — so no further normalization is
+  required.
