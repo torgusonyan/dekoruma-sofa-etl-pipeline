@@ -10,7 +10,7 @@ PostgreSQL database for further analysis.
 
 ---
 
-## Pipeline
+## Pipeline Architecture
 
 1. **Extract** — Scrape product data across all catalog pages (33 pages) using
    Selenium to render the dynamic page and BeautifulSoup to parse it. Each field
