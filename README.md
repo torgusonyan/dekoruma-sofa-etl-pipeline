@@ -105,3 +105,16 @@ the loaded database table.
 - **Normalization:** the single table is already in 3NF — one primary key (`id`)
   with every attribute depending only on it — so no further normalization is
   required.
+
+---
+
+## Dataset
+
+Sofa product listings scraped from the [Dekoruma](https://www.dekoruma.com/Sofa)
+e-commerce website.
+
+- **Source:** [https://www.dekoruma.com/Sofa](https://www.dekoruma.com/Sofa)
+- **Collection method:** web scraping with Selenium + BeautifulSoup across all
+  catalog pages
+- **Fields:** product name, price, discount, discounted price, size variants,
+  units sold, and shipping area
