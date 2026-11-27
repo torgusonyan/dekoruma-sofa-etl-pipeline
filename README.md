@@ -5,7 +5,7 @@ product listings from the [Dekoruma](https://www.dekoruma.com/Sofa) e-commerce
 website, cleans and prepares the data with Pandas, and loads the result into a
 PostgreSQL database for further analysis.
 
-**Author:** Ryan Farid Pratama
+**Author:** Ryan Farid Pratama <br>
 **Tech Stack:** Python · Selenium · BeautifulSoup · Pandas · PostgreSQL · SQL
 
 ---
